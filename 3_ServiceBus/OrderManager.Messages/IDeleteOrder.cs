@@ -2,7 +2,7 @@
 namespace OrderManager.Messages
 {
     /// <summary>
-    /// Delete an order.
+    /// Command to delete an order.
     /// </summary>
     public interface IDeleteOrder
     {
