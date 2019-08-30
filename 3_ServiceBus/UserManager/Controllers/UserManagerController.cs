@@ -65,7 +65,7 @@ namespace UserManager.Controllers
         /// Deletes the last order of the given user.
         /// </summary>
         /// <param name="userName">The user name</param>
-        [HttpGet]
+        [HttpDelete]
         [Route("{userName}")]
         public async Task DeleteLastOrder([FromRoute] string userName)
         {

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OrderManager.Consumers;
+using OrderManager.Services;
 
 namespace OrderManager
 {
@@ -24,6 +25,8 @@ namespace OrderManager
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddScoped<OrderManagerService>();
 
             services.AddMassTransit(
                 provider => Bus.Factory.CreateUsingRabbitMq(cfg =>

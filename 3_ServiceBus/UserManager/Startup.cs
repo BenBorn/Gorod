@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OrderManager.Http;
+using UserManager.Consumers;
 
 namespace UserManager
 {
@@ -46,13 +47,13 @@ namespace UserManager
                         ep.UseMessageRetry(r => r.Interval(2, 100));
 
                         // Add consumers here:
-                        //ep.ConfigureConsumer<DeleteOrderConsumer>(provider);
+                        ep.ConfigureConsumer<OrderCreatedConsumer>(provider);
                     });
                 }),
                 config =>
                 {
                     // Add consumers here:
-                    //config.AddConsumer<T>()
+                    config.AddConsumer<OrderCreatedConsumer>();
                 });
         }
 

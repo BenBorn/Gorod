@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OrderManager.Http.Dtos;
+using OrderManager.Services;
 
 namespace OrderManager.Controllers
 {
@@ -9,11 +9,11 @@ namespace OrderManager.Controllers
     [ApiController]
     public class OrderManagerController : ControllerBase
     {
-        private int _orderSeq = 0;
-        private static readonly Dictionary<int, OrderDto> _orderStorage = new Dictionary<int, OrderDto>();
+        private readonly OrderManagerService _service;
 
-        public OrderManagerController()
+        public OrderManagerController(OrderManagerService service)
         {
+            _service = service;
         }
 
         /// <summary>
@@ -22,17 +22,9 @@ namespace OrderManager.Controllers
         /// <param name="dto">Order dto</param>
         /// <returns>Unique id of the created order.</returns>
         [HttpPost]
-        public int CreateOrder([FromBody] CreateOrderDto dto)
+        public Task<int> CreateOrder([FromBody] CreateOrderDto dto)
         {
-            int id = Interlocked.Increment(ref _orderSeq);
-            _orderStorage[id] = new OrderDto
-            {
-                Id = id,
-                Count = dto.Count,
-                Item = dto.Item
-            };
-
-            return id;
+            return _service.CreateOrder(dto);
         }
 
         /// <summary>
@@ -44,7 +36,7 @@ namespace OrderManager.Controllers
         [Route("{orderId}")]
         public OrderDto GetOrder([FromRoute]int orderId)
         {
-            return _orderStorage[orderId];
+            return _service.GetOrder(orderId);
         }
     }
 }
